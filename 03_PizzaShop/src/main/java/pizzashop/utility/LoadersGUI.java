@@ -1,18 +1,22 @@
-package pizzashop.gui;
+package pizzashop.utility;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import pizzashop.controller.OrdersGUIController;
+import pizzashop.service.PizzaService;
+
 import java.io.IOException;
 import java.util.Optional;
 
-public class KitchenGUI {
-    public void KitchenGUI() {
+public class LoadersGUI {
+
+    public void loadKitchenGUI() {
         VBox vBoxKitchen = null;
 
         try {
@@ -42,10 +46,39 @@ public class KitchenGUI {
                 }
             }
 
-            });
+        });
         stage.setAlwaysOnTop(false);
         stage.setScene(new Scene(vBoxKitchen));
         stage.show();
         stage.toBack();
     }
+
+//    public void displayOrdersForm(PizzaService service){
+//        VBox vBoxOrders = null;
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/OrdersGUIFXML.fxml"));
+//
+//            //vBoxOrders = FXMLLoader.load(getClass().getResource("/fxml/OrdersGUIFXML.fxml"));
+//            vBoxOrders = loader.load();
+//            OrdersGUIController ordersCtrl= loader.getController();
+//            ordersCtrl.setService(service, tableNumber);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        Stage stage = new Stage();
+//        stage.setTitle("Table"+getTableNumber()+" order form");
+//        stage.setResizable(false);
+//        // disable X on the window
+//        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+//            @Override
+//            public void handle(WindowEvent event) {
+//                // consume event
+//                event.consume();
+//            }
+//        });
+//        stage.setScene(new Scene(vBoxOrders));
+//        stage.show();
+//    }
 }

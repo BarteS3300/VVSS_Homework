@@ -1,4 +1,4 @@
-package pizzashop.gui;
+package pizzashop.utility;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;

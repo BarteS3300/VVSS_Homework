@@ -1,67 +1,94 @@
 package pizzashop.controller;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.util.Callback;
+import pizzashop.model.Order;
+import pizzashop.model.PairItemQuantity;
+import pizzashop.model.StatusType;
+import pizzashop.service.PizzaService;
+import pizzashop.utility.Observer;
+
 import java.util.Calendar;
 
-public class KitchenGUIController {
+public class KitchenGUIController implements Observer {
     @FXML
-    private ListView kitchenOrdersList;
+    private ListView<Order> kitchenOrdersList;
     @FXML
     public Button cook;
     @FXML
     public Button ready;
 
-    public static  ObservableList<String> order = FXCollections.observableArrayList();
+    public static  ObservableList<Order> ordersToPrepare = FXCollections.observableArrayList();
     private Object selectedOrder;
     private Calendar now = Calendar.getInstance();
     private String extractedTableNumberString = new String();
     private int extractedTableNumberInteger;
+    private PizzaService service;
     //thread for adding data to kitchenOrderList
-    public  Thread addOrders = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            while (true) {
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        kitchenOrdersList.setItems(order);
-                        }
-                });
-                try {
-                    Thread.sleep(100);
-                  } catch (InterruptedException ex) {
-                    break;
-                }
-            }
-        }
-    });
+
+    public void setService(PizzaService service) {
+        this.service = service;
+        System.out.println("Service set in KitchenGUIController");
+        update();
+        cook.disableProperty().bind(kitchenOrdersList.getSelectionModel().selectedItemProperty().isNull());
+    }
 
     public void initialize() {
-        //starting thread for adding data to kitchenOrderList
-        addOrders.setDaemon(true);
-        addOrders.start();
+
+        //Setting the ListView to display the Order object
+        kitchenOrdersList.setCellFactory(new Callback<ListView<Order>, ListCell<Order>>() {
+            @Override
+            public ListCell<Order> call(ListView<Order> param) {
+                return new ListCell<Order>() {
+                    @Override
+                    protected void updateItem(Order item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty || item == null) {
+                            setText(null);
+                        } else {
+                            StringBuilder sb = new StringBuilder();
+                            if (item.getStatus() == StatusType.COOKING)
+                                sb.append(" Cooking started at: ").append(now.get(Calendar.HOUR)).append(":").append(now.get(Calendar.MINUTE)).append(": ");
+                            for (PairItemQuantity pair : item.getOrderItems()) {
+                                sb.append(service.getMenuItem(pair.getIdItem()).getName()).append(" x").append(pair.getQuantity()).append(", ");
+                            }
+                            sb.delete(sb.length() - 2, sb.length());
+                            sb.append(";");
+                            setText(sb.toString());
+
+                        }
+                    }
+                };
+            }
+        });
+
         //Controller for Cook Button
         cook.setOnAction(event -> {
-            selectedOrder = kitchenOrdersList.getSelectionModel().getSelectedItem();
-            kitchenOrdersList.getItems().remove(selectedOrder);
-            kitchenOrdersList.getItems().add(selectedOrder.toString()
-                     .concat(" Cooking started at: ").toUpperCase()
-                     .concat(now.get(Calendar.HOUR)+":"+now.get(Calendar.MINUTE)));
+            Order selectedOrder = kitchenOrdersList.getSelectionModel().getSelectedItem();
+            service.cookOrder(selectedOrder);
+            System.out.println("Cooking");
+            update();
         });
         //Controller for Ready Button
         ready.setOnAction(event -> {
-            selectedOrder = kitchenOrdersList.getSelectionModel().getSelectedItem();
+            Order selectedOrder = kitchenOrdersList.getSelectionModel().getSelectedItem();
+            service.preparedOrder(selectedOrder);
             kitchenOrdersList.getItems().remove(selectedOrder);
-            extractedTableNumberString = selectedOrder.toString().subSequence(5, 6).toString();
-            extractedTableNumberInteger = Integer.valueOf(extractedTableNumberString);
             System.out.println("--------------------------");
-            System.out.println("Table " + extractedTableNumberInteger +" ready at: " + now.get(Calendar.HOUR)+":"+now.get(Calendar.MINUTE));
+            System.out.println("Table " + selectedOrder.getTableNumber() +" ready at: " + now.get(Calendar.HOUR)+":"+now.get(Calendar.MINUTE));
             System.out.println("--------------------------");
+            System.out.println("Ready");
         });
+    }
+
+    @Override
+    public void update() {
+        ordersToPrepare.setAll(service.getOrdersPreparingOrCooking());
+        kitchenOrdersList.setItems(ordersToPrepare);
     }
 }

@@ -10,7 +10,8 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import pizzashop.controller.MainGUIController;
-import pizzashop.gui.KitchenGUI;
+import pizzashop.repository.OrderRepository;
+import pizzashop.utility.KitchenGUI;
 import pizzashop.model.PaymentType;
 import pizzashop.repository.MenuRepository;
 import pizzashop.repository.PaymentRepository;
@@ -24,8 +25,13 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
 
         MenuRepository repoMenu=new MenuRepository();
+        OrderRepository repoOrder= new OrderRepository();
         PaymentRepository payRepo= new PaymentRepository();
-        PizzaService service = new PizzaService(repoMenu, payRepo);
+
+        PizzaService service = PizzaService.getInstance();
+        service.setMenuRepository(repoMenu);
+        service.setOrderRepository(repoOrder);
+        service.setPaymentRepository(payRepo);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/mainFXML.fxml"));
         //VBox box = loader.load();
@@ -42,8 +48,8 @@ public class Main extends Application {
                 Optional<ButtonType> result = exitAlert.showAndWait();
                 if (result.get() == ButtonType.YES){
                     //Stage stage = (Stage) this.getScene().getWindow();
-                    System.out.println("Incasari cash: "+service.getTotalAmount(PaymentType.Cash));
-                    System.out.println("Incasari card: "+service.getTotalAmount(PaymentType.Card));
+                    System.out.println("Incasari cash: "+service.getTotalAmount(PaymentType.CASH));
+                    System.out.println("Incasari card: "+service.getTotalAmount(PaymentType.CARD));
 
                     primaryStage.close();
                 }
@@ -61,7 +67,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(box));
         primaryStage.show();
         KitchenGUI kitchenGUI = new KitchenGUI();
-        kitchenGUI.KitchenGUI();
+        kitchenGUI.KitchenGUI(service);
     }
 
     public static void main(String[] args) { launch(args);
