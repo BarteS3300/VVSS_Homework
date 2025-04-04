@@ -1,21 +1,31 @@
 package pizzashop.model;
 
 public class Payment {
-    private int tableNumber;
+    private Integer id;
+    private Integer orderId;
     private PaymentType type;
-    private double amount;
-    public Payment(int tableNumber, PaymentType type, double amount) {
-        this.tableNumber = tableNumber;
+    private Double amount;
+    public Payment(Integer id, Integer orderId, PaymentType type, Double amount) {
+        this.id = id;
+        this.orderId = orderId;
         this.type = type;
         this.amount = amount;
     }
 
-    public int getTableNumber() {
-        return tableNumber;
+    public Integer getId() {
+        return id;
     }
 
-    public void setTableNumber(int tableNumber) {
-        this.tableNumber = tableNumber;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
     }
 
     public PaymentType getType() {
@@ -26,16 +36,16 @@ public class Payment {
         this.type = type;
     }
 
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
     @Override
     public String toString() {
-        return tableNumber + ","+type +"," + amount;
+        return id + "," + orderId + "," + type + "," + amount;
     }
 }

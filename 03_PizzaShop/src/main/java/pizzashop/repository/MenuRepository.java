@@ -1,6 +1,6 @@
 package pizzashop.repository;
 
-import pizzashop.model.MenuDataModel;
+import pizzashop.model.MenuItem;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,43 +9,38 @@ import java.util.StringTokenizer;
 
 public class MenuRepository {
     private static String filename = "data/menu.txt";
-    private List<MenuDataModel> listMenu;
+    private List<MenuItem> listMenu = new ArrayList<>();
 
     public MenuRepository(){
+        readMenu();
     }
 
     private void readMenu(){
-        //ClassLoader classLoader = MenuRepository.class.getClassLoader();
         File file = new File(filename);
-        this.listMenu= new ArrayList();
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new FileReader(file));
+        try(FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr)) {
             String line = null;
             while((line=br.readLine())!=null){
-                MenuDataModel menuItem=getMenuItem(line);
+                MenuItem menuItem = getMenuItem(line);
                 listMenu.add(menuItem);
             }
-            br.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private MenuDataModel getMenuItem(String line){
-        MenuDataModel item=null;
-        if (line==null|| line.equals("")) return null;
+    private MenuItem getMenuItem(String line){
+        if (line==null || line.isEmpty()) {
+            return null;
+        }
         StringTokenizer st=new StringTokenizer(line, ",");
+        Integer id = Integer.parseInt(st.nextToken());
         String name= st.nextToken();
         double price = Double.parseDouble(st.nextToken());
-        item = new MenuDataModel(name, 0, price);
-        return item;
+        return new MenuItem(id, name, price);
     }
 
-    public List<MenuDataModel> getMenu(){
-        readMenu();//create a new menu for each table, on request
+    public List<MenuItem> getMenu(){
         return listMenu;
     }
 }

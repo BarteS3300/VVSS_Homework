@@ -1,41 +1,143 @@
 package pizzashop.service;
 
-import pizzashop.model.MenuDataModel;
-import pizzashop.model.Payment;
-import pizzashop.model.PaymentType;
+import pizzashop.model.*;
 import pizzashop.repository.MenuRepository;
+import pizzashop.repository.OrderRepository;
 import pizzashop.repository.PaymentRepository;
+import pizzashop.model.StatusType;
+import pizzashop.utility.Observable;
+import pizzashop.utility.Observer;
+import pizzashop.validation.MenuItemValidation;
+import pizzashop.validation.OrderValidation;
+import pizzashop.validation.PaymentValidation;
+import pizzashop.validation.Validator;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class PizzaService {
+public class PizzaService implements Observable<Observer> {
+
+    private Validator<MenuItem> menuItemValidator;
+    private Validator<Order> orderValidator;
+    private Validator<Payment> paymentValidator;
 
     private MenuRepository menuRepo;
+    private OrderRepository orderRepo;
     private PaymentRepository payRepo;
+    private List<Observer> observers = new ArrayList<>();
 
-    public PizzaService(MenuRepository menuRepo, PaymentRepository payRepo){
-        this.menuRepo=menuRepo;
-        this.payRepo=payRepo;
+    private static PizzaService instance = null;
+
+
+    public static PizzaService getInstance() {
+        if (instance == null) {
+            instance = new PizzaService();
+        }
+        return instance;
     }
 
-    public List<MenuDataModel> getMenuData(){return menuRepo.getMenu();}
+    private PizzaService(){
+        menuItemValidator = new MenuItemValidation();
+        orderValidator = new OrderValidation();
+        paymentValidator = new PaymentValidation();
+    }
+
+    public void setMenuRepository(MenuRepository menuRepo) {
+        this.menuRepo = menuRepo;
+    }
+
+    public void setOrderRepository(OrderRepository orderRepo) {
+        this.orderRepo = orderRepo;
+    }
+
+    public void setPaymentRepository(PaymentRepository payRepo) {
+        this.payRepo = payRepo;
+    }
+
+    public MenuItem getMenuItem(int id){
+        List<MenuItem> menu = menuRepo.getMenu();
+        for (MenuItem item : menu) {
+            if (item.getId() == id) {
+                return item;
+            }
+        }
+        return null;
+    }
 
     public List<Payment> getPayments(){return payRepo.getAll(); }
 
-    public void addPayment(int table, PaymentType type, double amount){
-        Payment payment= new Payment(table, type, amount);
+    public List<Order> getOrdersPreparingOrCooking(){
+        return orderRepo.getAll().stream()
+                .filter(order -> order.getStatus() == StatusType.PREPARING || order.getStatus() == StatusType.COOKING)
+                .collect(Collectors.toList());
+    }
+
+    public List<PairItemQuantity> createNewPairs(){
+        List<PairItemQuantity> pairs = new ArrayList<>();
+        List<MenuItem> menu = menuRepo.getMenu();
+        for (MenuItem item : menu) {
+            pairs.add(new PairItemQuantity(item.getId(), 0));
+        }
+        return pairs;
+    }
+
+    public void addPayment(int orderId, PaymentType type, double amount){
+        Payment payment= new Payment(0, orderId, type, amount);
         payRepo.add(payment);
     }
 
     public double getTotalAmount(PaymentType type){
         double total=0.0f;
-        List<Payment> l=getPayments();
-        if ((l==null) ||(l.size()==0)) return total;
-        for (Payment p:l){
-            if (p.getType().equals(type))
-                total+=p.getAmount();
+        List<Payment> list=getPayments();
+        if ((list==null) ||(list.isEmpty())) return total;
+        for (Payment payment : list){
+            if (payment.getType().equals(type))
+                total += payment.getAmount();
         }
         return total;
     }
 
+    public void addOrder(Order tableOrder) {
+        orderRepo.add(tableOrder);
+        notifyKitchenObs();
+    }
+
+    public void cookOrder(Order order) {
+        order.setStatus(StatusType.COOKING);
+        orderRepo.update(order);
+        notifyKitchenObs();
+    }
+
+    public void preparedOrder(Order order) {
+        order.setStatus(StatusType.PREPARED);
+        orderRepo.update(order);
+        notifyKitchenObs();
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        if (!observers.contains(observer)) {
+            observers.add(observer);
+        }
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        if (observers.contains(observer)) {
+            observers.remove(observer);
+        }
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update();
+        }
+    }
+
+    private void notifyKitchenObs(){
+        if(observers.isEmpty()) return;
+        observers.get(0).update();
+    }
 }
