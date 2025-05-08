@@ -68,16 +68,18 @@ public class OrdersGUIController implements Observer {
 
     public void setService(PizzaService service, int tableNumber){
         this.service = service;
-        this.service.addObserver(this);
+        //this.service.addObserver(this);
         this.tableNumber = tableNumber;
-        addToOrder.disableProperty().bind(Bindings.isEmpty(orderTable.getSelectionModel().getSelectedItems()));
         initData();
     }
 
     private void newOrder(){
         this.tableOrder = new Order(tableNumber);
+        addToOrder.disableProperty().bind(Bindings.isEmpty(orderTable.getSelectionModel().getSelectedItems()));
         menuQuantity.setAll(service.createNewPairs());
         orderTable.setItems(menuQuantity);
+        placeOrder.setDisable(true);
+        orderServed.setDisable(true);
         payOrder.setDisable(true);
     }
 
@@ -96,11 +98,16 @@ public class OrdersGUIController implements Observer {
             service.addOrder(tableOrder);
             System.out.println(service.getOrdersPreparingOrCooking());
             orderStatus.setText("Order placed at: " +  now.get(Calendar.HOUR)+":"+now.get(Calendar.MINUTE));
+            orderServed.setDisable(false);
+            addToOrder.disableProperty().unbind();
+            addToOrder.setDisable(true);
+            placeOrder.setDisable(true);
         });
 
         //Controller for Order Served Button
         orderServed.setOnAction(event -> {orderStatus.setText("Served at: " + now.get(Calendar.HOUR)+":"+now.get(Calendar.MINUTE));
         payOrder.setDisable(false);
+        orderServed.setDisable(true);
         });
 
         //Controller for Pay Order Button
@@ -116,6 +123,7 @@ public class OrdersGUIController implements Observer {
             System.out.println("--------------------------");
             PaymentAlert pay = new PaymentAlert(service);
             pay.showPaymentAlert(tableNumber, this.getTotalAmount());
+            newOrder();
         });
     }
 
@@ -145,6 +153,7 @@ public class OrdersGUIController implements Observer {
         addToOrder.setOnAction(event -> {
             orderTable.getSelectionModel().selectedItemProperty().get().setQuantity(orderQuantity.getValue());
             orderTable.refresh();
+            placeOrder.setDisable(false);
         });
 
         //Controller for Exit table Button

@@ -85,4 +85,7 @@ public class OrderRepository {
         }
     }
 
+    public Integer size() {
+        return listOrders.size();
+    }
 }

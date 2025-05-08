@@ -67,4 +67,7 @@ public class PaymentRepository {
         }
     }
 
+    public Integer size() {
+        return paymentList.size();
+    }
 }

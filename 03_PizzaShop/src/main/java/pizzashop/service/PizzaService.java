@@ -83,7 +83,7 @@ public class PizzaService implements Observable<Observer> {
     }
 
     public void addPayment(int orderId, PaymentType type, double amount){
-        Payment payment= new Payment(0, orderId, type, amount);
+        Payment payment= new Payment(payRepo.size(), orderId, type, amount);
         payRepo.add(payment);
     }
 
@@ -98,21 +98,22 @@ public class PizzaService implements Observable<Observer> {
         return total;
     }
 
-    public void addOrder(Order tableOrder) {
-        orderRepo.add(tableOrder);
-        notifyKitchenObs();
+    public void addOrder(Order order) {
+        order.setId(orderRepo.size());
+        orderRepo.add(order);
+        notifyObservers();
     }
 
     public void cookOrder(Order order) {
         order.setStatus(StatusType.COOKING);
         orderRepo.update(order);
-        notifyKitchenObs();
+        notifyObservers();
     }
 
     public void preparedOrder(Order order) {
         order.setStatus(StatusType.PREPARED);
         orderRepo.update(order);
-        notifyKitchenObs();
+        notifyObservers();
     }
 
     @Override
@@ -138,6 +139,6 @@ public class PizzaService implements Observable<Observer> {
 
     private void notifyKitchenObs(){
         if(observers.isEmpty()) return;
-        observers.get(0).update();
+        observers.forEach(Observer::update);
     }
 }

@@ -34,6 +34,7 @@ public class KitchenGUIController implements Observer {
     public void setService(PizzaService service) {
         this.service = service;
         System.out.println("Service set in KitchenGUIController");
+        service.addObserver(this);
         update();
         cook.disableProperty().bind(kitchenOrdersList.getSelectionModel().selectedItemProperty().isNull());
     }
@@ -88,7 +89,9 @@ public class KitchenGUIController implements Observer {
 
     @Override
     public void update() {
+        System.out.println("Update method called in KitchenGUIController");
         ordersToPrepare.setAll(service.getOrdersPreparingOrCooking());
         kitchenOrdersList.setItems(ordersToPrepare);
+        kitchenOrdersList.refresh();
     }
 }
