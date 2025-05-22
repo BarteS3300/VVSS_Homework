@@ -88,12 +88,22 @@ public class PizzaService implements Observable<Observer> {
     }
 
     public double getTotalAmount(PaymentType type){
-        double total=0.0f;
-        List<Payment> list=getPayments();
-        if ((list==null) ||(list.isEmpty())) return total;
-        for (Payment payment : list){
-            if (payment.getType().equals(type))
-                total += payment.getAmount();
+        double total = 0.0f;
+        List<Payment> list = getPayments();
+        if (list.isEmpty()) {
+            return total; }
+        if (type == PaymentType.CARD) {
+            for (Payment payment : list) {
+                if (payment.getType().equals(PaymentType.CARD)) {
+                    total += payment.getAmount();
+                }
+            }
+        } else {
+            for (Payment payment : list) {
+                if (payment.getType().equals(PaymentType.CASH)) {
+                    total += payment.getAmount();
+                }
+            }
         }
         return total;
     }

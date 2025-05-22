@@ -26,7 +26,7 @@ public class Main extends Application {
 
         MenuRepository repoMenu=new MenuRepository();
         OrderRepository repoOrder= new OrderRepository();
-        PaymentRepository payRepo= new PaymentRepository();
+        PaymentRepository payRepo= new PaymentRepository("data/payments.txt");
 
         PizzaService service = PizzaService.getInstance();
         service.setMenuRepository(repoMenu);
@@ -48,8 +48,8 @@ public class Main extends Application {
                 Optional<ButtonType> result = exitAlert.showAndWait();
                 if (result.get() == ButtonType.YES){
                     //Stage stage = (Stage) this.getScene().getWindow();
-                    System.out.println("Incasari cash: "+service.getTotalAmount(PaymentType.CASH));
-                    System.out.println("Incasari card: "+service.getTotalAmount(PaymentType.CARD));
+                    System.out.println("Incasari cash: " + service.getTotalAmount(PaymentType.CASH));
+                    System.out.println("Incasari card: " + service.getTotalAmount(PaymentType.CARD));
 
                     primaryStage.close();
                 }

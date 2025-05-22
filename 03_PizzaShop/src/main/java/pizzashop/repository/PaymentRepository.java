@@ -9,11 +9,12 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class PaymentRepository {
-    private static String filename = "data/payments.txt";
-    private List<Payment> paymentList;
+    private final String filename;
+    private final List<Payment> paymentList;
 
-    public PaymentRepository(){
+    public PaymentRepository(String filename){
         this.paymentList = new ArrayList<>();
+        this.filename = filename;
         readPayments();
     }
 
@@ -46,6 +47,11 @@ public class PaymentRepository {
     }
 
     public void add(Payment payment){
+        if (payment.getOrderId() <= 0)
+            throw new IllegalArgumentException("Order ID must be positive");
+        if (payment.getAmount() <= 0)
+            throw new IllegalArgumentException("Amount must be greater than 0");
+
         paymentList.add(payment);
         writeAll();
     }

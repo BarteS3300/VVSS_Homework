@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><title>testspec Proiect231 - bsir3280_BBT</title>
+<link type="text/css" rel="stylesheet" href="https://www.scs.ubbcluj.ro/testlink/gui/themes/default/css/tl_documents.css" />
+<style type="text/css" media="print">.notprintable { display:none;}</style>
+</head>
+<body>
+<div>
+<div style="float:right;">TestLink Community [configure $tlCfg-&gt;document_generator-&gt;company_name]</div>
+<div>&nbsp;</div><hr />
+<p style="text-align: center;"><img alt="TestLink logo" title="configure using $tlCfg->document_generator->company_logo"  width= height= src="https://www.scs.ubbcluj.ro/testlink/gui/themes/default/images/tl-logo-transparent-25.png" /></p></div>
+<div class="doc_title"><p>Test Specification</p></div>
+<div class="doc_title" style="text-align:left;margin: auto;"><p>Test Project: Proiect231<br/>Test Suite: Proiect231 - bsir3280_BBT</p></div>
+<div class="summary"><p id="printedby">Printed by TestLink on 16/05/2025</p></div>
+<div class="pagefooter" id="copyright">2012 &copy; TestLink Community</div>
+<h1 class="general" style="page-break-before: always">Table Of Contents</h1><div class="toc"><p style="padding-left: 20px;"><b><a href="#toc_1">1.bsir3280_BBT</a></b></p>
+<p style="padding-left: 45px;"><a href="#toc_tc26796">Prj231-92: ECP_Valid_Add_Payment</a></p><p style="padding-left: 45px;"><a href="#toc_tc26798">Prj231-93: ECP_Invalid_Add_Payment</a></p><p style="padding-left: 45px;"><a href="#toc_tc26800">Prj231-94: BVA_Valid_Add_Payment</a></p><p style="padding-left: 45px;"><a href="#toc_tc26802">Prj231-95: BVA_Invalid_Add_Payment</a></p></div><h1 class="doclevel" >Scope</h1>
+<div class="txtlevel"><p>Proiect de testare pentru studentii din grupa 231.</p></div>
+ <br/><a name='toc_1'></a>
+<h1 class='doclevel'>1.Test Suite : bsir3280_BBT</h1>
+<div><p>Se testeaza salvearea tranzactie in fisier.</p>
+</div><a name="toc_tc26796"></a><p>&nbsp;</p><div> <table class="tc" width="90%" ><tr><th colspan="4">Test Case Prj231-92: ECP_Valid_Add_Payment&nbsp;<span style="font-size: 80%;">[Version  : 1]</span></th></tr>
+<tr><td width="20%" valign="top"><span class="label">Author:</span></td><td colspan="3">bsir3280</td></tr>
+<tr><td colspan="4"><span class="label">Summary:</span><br /><p>Testare cu o tranzacti valida.</p>
+
+<p>&nbsp;</p>
+</td></tr><tr><td colspan="4"><span class="label">Preconditions:</span><br /><p>Fisierul data/test_payments.txt&nbsp;este gol.</p>
+</td></tr><tr><td width="20%" valign="top"><span class="label">Execution type:</span></td><td colspan="3">Automated</td></tr>
+<tr><td width="20%" valign="top"><span class="label">Estimated exec. duration (min):</span></td><td colspan="3"></td></tr>
+<tr><td width="20%" valign="top"><span class="label">Importance:</span></td><td colspan="3">Medium</td></tr>
+<tr><td colspan="4"></td></tr><tr><td > name of the autotest class:</td><td  colspan = "3" >pizzashop/repository/PaymentRepositoryTest.java </td></tr>
+<tr><td > name of the test method:</td><td  colspan = "3" >pizzashop/repository/PaymentRepositoryTest.java#addValidPayment() </td></tr>
+<tr><td width="20%" valign="top"><span class="label">Requirements</span><td colspan="3">bsir3280_F01:  SalvareTranzactii [Version : 1]<br /></td></tr>
+<tr><td width="20%" valign="top"><span class="label">Keywords:</span></td><td colspan="3">&nbsp;None<br/></td></tr>
+</table>
+</div>
+<a name="toc_tc26798"></a><p>&nbsp;</p><div> <table class="tc" width="90%" ><tr><th colspan="4">Test Case Prj231-93: ECP_Invalid_Add_Payment&nbsp;<span style="font-size: 80%;">[Version  : 1]</span></th></tr>
+<tr><td width="20%" valign="top"><span class="label">Author:</span></td><td colspan="3">bsir3280</td></tr>
+<tr><td colspan="4"><span class="label">Summary:</span><br /><p>Testeare cu o tranzactie cu orderId invalid.</p>
+</td></tr><tr><td colspan="4"><span class="label">Preconditions:</span><br /><p>Fisierul data/test_payments.txt&nbsp;este gol.</p>
+</td></tr><tr><td width="20%" valign="top"><span class="label">Execution type:</span></td><td colspan="3">Automated</td></tr>
+<tr><td width="20%" valign="top"><span class="label">Estimated exec. duration (min):</span></td><td colspan="3"></td></tr>
+<tr><td width="20%" valign="top"><span class="label">Importance:</span></td><td colspan="3">Medium</td></tr>
+<tr><td colspan="4"></td></tr><tr><td > name of the autotest class:</td><td  colspan = "3" >pizzashop/repository/PaymentRepositoryTest.java</td></tr>
+<tr><td > name of the test method:</td><td  colspan = "3" >pizzashop/repository/PaymentRepositoryTest.java#invalidOrderId()</td></tr>
+<tr><td width="20%" valign="top"><span class="label">Requirements</span><td colspan="3">bsir3280_F01:  SalvareTranzactii [Version : 1]<br /></td></tr>
+<tr><td width="20%" valign="top"><span class="label">Keywords:</span></td><td colspan="3">&nbsp;None<br/></td></tr>
+</table>
+</div>
+<a name="toc_tc26800"></a><p>&nbsp;</p><div> <table class="tc" width="90%" ><tr><th colspan="4">Test Case Prj231-94: BVA_Valid_Add_Payment&nbsp;<span style="font-size: 80%;">[Version  : 1]</span></th></tr>
+<tr><td width="20%" valign="top"><span class="label">Author:</span></td><td colspan="3">bsir3280</td></tr>
+<tr><td colspan="4"><span class="label">Summary:</span><br /><p>Testare cu o tranzacti valid cu valori minime la orderId si amount.</p>
+</td></tr><tr><td colspan="4"><span class="label">Preconditions:</span><br /><p>Fisierul data/test_payments.txt&nbsp;este gol.</p>
+</td></tr><tr><td width="20%" valign="top"><span class="label">Execution type:</span></td><td colspan="3">Automated</td></tr>
+<tr><td width="20%" valign="top"><span class="label">Estimated exec. duration (min):</span></td><td colspan="3"></td></tr>
+<tr><td width="20%" valign="top"><span class="label">Importance:</span></td><td colspan="3">Medium</td></tr>
+<tr><td colspan="4"></td></tr><tr><td > name of the autotest class:</td><td  colspan = "3" >pizzashop/repository/PaymentRepositoryTest.java </td></tr>
+<tr><td > name of the test method:</td><td  colspan = "3" >pizzashop/repository/PaymentRepositoryTest.java#boundaryMinValid()</td></tr>
+<tr><td width="20%" valign="top"><span class="label">Requirements</span><td colspan="3">bsir3280_F01:  SalvareTranzactii [Version : 1]<br /></td></tr>
+<tr><td width="20%" valign="top"><span class="label">Keywords:</span></td><td colspan="3">&nbsp;None<br/></td></tr>
+</table>
+</div>
+<a name="toc_tc26802"></a><p>&nbsp;</p><div> <table class="tc" width="90%" ><tr><th colspan="4">Test Case Prj231-95: BVA_Invalid_Add_Payment&nbsp;<span style="font-size: 80%;">[Version  : 1]</span></th></tr>
+<tr><td width="20%" valign="top"><span class="label">Author:</span></td><td colspan="3">bsir3280</td></tr>
+<tr><td colspan="4"><span class="label">Summary:</span><br /><p>Testare cu o tranzactie cu orderId 0 (Invalida).</p>
+</td></tr><tr><td colspan="4"><span class="label">Preconditions:</span><br /><p>Fisierul data/test_payments.txt&nbsp;este gol.</p>
+</td></tr><tr><td width="20%" valign="top"><span class="label">Execution type:</span></td><td colspan="3">Automated</td></tr>
+<tr><td width="20%" valign="top"><span class="label">Estimated exec. duration (min):</span></td><td colspan="3"></td></tr>
+<tr><td width="20%" valign="top"><span class="label">Importance:</span></td><td colspan="3">Medium</td></tr>
+<tr><td colspan="4"></td></tr><tr><td > name of the autotest class:</td><td  colspan = "3" >pizzashop/repository/PaymentRepositoryTest.java </td></tr>
+<tr><td > name of the test method:</td><td  colspan = "3" >pizzashop/repository/PaymentRepositoryTest.java#boundaryInvalidOrderId()</td></tr>
+<tr><td width="20%" valign="top"><span class="label">Requirements</span><td colspan="3">bsir3280_F01:  SalvareTranzactii [Version : 1]<br /></td></tr>
+<tr><td width="20%" valign="top"><span class="label">Keywords:</span></td><td colspan="3">&nbsp;None<br/></td></tr>
+</table>
+</div>
+
+</body>
+</html>
