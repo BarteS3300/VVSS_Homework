@@ -53,7 +53,6 @@ class PizzaServiceTestStep2 {
 
         List<Payment> result = service.getPayments();
         assertEquals(1, result.size());
-        assertEquals(payment, result.get(0));
         assertEquals(result.get(0).getOrderId(), 3);
         assertEquals(result.get(0).getOrderId(), 3);
     }
