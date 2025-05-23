@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PaymentServiceTestGetTotalAmount {
+class PizzaServiceTestGetTotalAmount {
 
     private final String testFile = "data/test_payments.txt";
     private PaymentRepository repository = new PaymentRepository(testFile);;

@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class PaymentServiceTestStep3 {
+class PizzaServiceTestStep3 {
 
     PaymentRepository payRepo;
     PizzaService service;
